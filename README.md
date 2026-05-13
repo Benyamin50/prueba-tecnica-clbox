@@ -1,40 +1,44 @@
-# Mi prueba técnica para CLBOX – Filebrowser con Docker
+Mi prueba técnica para CLBOX – Filebrowser con Docker
 Candidato: Benjamín Calderón
 Fecha: 13/05/2026
 
-¿Qué hice?
-Desplegué Filebrowser, con persistencia de archivos y control de acceso.
+Resumen del Proyecto
+Desplegué con éxito Filebrowser utilizando Docker, asegurando la persistencia de archivos, una gestión eficiente de la base de datos y control de acceso configurado.
 
-Comandos que usé:
-bash
-Levantar el servicio (en segundo plano)
+Comandos de Gestión
+Utilicé los siguientes comandos para la administración del contenedor:
+
+Levantar el servicio: Ejecución en segundo plano.
+
+Bash
 docker compose up -d
+Monitoreo: Verificación de logs para control de errores.
 
-Ver si todo va bien o hay errores
+Bash
 docker logs clbox-filebrowser
+Limpieza total: Eliminación de contenedores y volúmenes para un reinicio limpio.
 
-Borrar todo (con volúmenes) para empezar de cero
+Bash
 docker compose down -v
+ Desafíos y Soluciones
+1. Error de arranque: Virtualización desactivada
+Problema: Docker no iniciaba debido a que la virtualización estaba desactivada a nivel de hardware.
 
-Problemas que tuve y cómo los solucion:
+Solución: Accedí a la BIOS para activar el SVM Mode, reinicié WSL2 y el motor de Docker funcionó correctamente.
 
-1. Docker no arrancaba – Virtualización desactivada
-Mi pc tenía el SVM Mode apagado en la BIOS.
-Entré a la BIOS, activé SVM, reinicié WSL2 y Docker funcionó.
+2. Conflicto de permisos: SQLite vs Windows
+Problema: Al intentar mapear el archivo filebrowser.db directamente en el host, el contenedor se bloqueaba por restricciones de permisos del sistema de archivos de Windows.
 
-2. La base de datos (SQLite) se peleaba con Windows
-Quise mapear filebrowser.db directo en mi disco y el contenedor se bloqueaba por permisos de Windows.
- Solución práctica:
+Solución: Implementé un volumen nombrado (fb_database) exclusivamente para la base de datos, mientras que la carpeta ./data se mantuvo mapeada localmente para facilitar el acceso a los archivos desde el explorador de Windows.
 
-Usé un volumen nombrado fb_database solo para la base de datos.
+3. Acceso inicial: Credenciales por defecto
+Problema: El login estándar admin/admin no permitía el acceso.
 
-Dejé la carpeta ./data para mis archivos normales, accesible desde el explorador de Windows.
+Solución: Identifiqué que las versiones modernas generan una contraseña aleatoria por seguridad en el primer arranque. Consulté los logs del contenedor para obtener la clave temporal y procedí a cambiarla por una credencial personalizada tras el primer ingreso.
 
-3. admin / admin no funcionaba – contraseña aleatoria
+Validación de Funcionamiento
+El servicio está totalmente operativo:
 
-La imagen moderna de Filebrowser genera una contraseña aleatoria en el primer arranque (por seguridad)
-Revisé los logs con docker logs y allí aparecía la clave real. La usé una vez y luego la cambié por una mía.
+Se confirmó la persistencia al subir el archivo hola-mundo.txt, visualizándose correctamente en la interfaz.
 
-¿Funciona?
-Sí, subí un archivo hola-mundo.txt y se veía en la interfaz.
-En la carpeta assets estan todas las pruebas.
+Las evidencias adicionales se encuentran disponibles en la carpeta assets.
