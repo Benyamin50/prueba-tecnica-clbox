@@ -1,4 +1,4 @@
-Mi prueba técnica para CLBOX – Filebrowser con Docker
+# Mi prueba técnica para CLBOX – Filebrowser con Docker
 Candidato: Benjamín Calderón
 Fecha: 13/05/2026
 
@@ -7,13 +7,13 @@ Desplegué Filebrowser, con persistencia de archivos y control de acceso.
 
 Comandos que usé:
 bash
-# Levantar el servicio (en segundo plano)
+Levantar el servicio (en segundo plano)
 docker compose up -d
 
-# Ver si todo va bien o hay errores
+Ver si todo va bien o hay errores
 docker logs clbox-filebrowser
 
-# Borrar todo (con volúmenes) para empezar de cero
+Borrar todo (con volúmenes) para empezar de cero
 docker compose down -v
 
 Problemas que tuve y cómo los solucion:
